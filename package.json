@@ -1,0 +1,26 @@
+{
+  "name": "gps-tracker",
+  "version": "1.0.0",
+  "description": "gps tracking server app",
+  "author": "The Wurschts <thewurschts@gmail.com>",
+  "main": "index.js",
+  "dependencies": {
+    "hapi":"12.1.x",
+    "mysql":"2.10.x",
+    "moment":"2.11.x"
+  },
+  "mysql":{
+    "host"     : "localhost",
+    "user"     : "tracking",
+    "password" : "",
+    "database" : "tracking"
+  },
+  "allowedDevices":[
+
+  ],
+  "server":{
+    "port":8090,
+    "host":"localhost"
+  }
+
+}
