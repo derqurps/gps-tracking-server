@@ -20,7 +20,7 @@ module.exports = function (request, reply) {
       alt:alt,
       time:time
     };
-    console.log(tracking)
+    
     db.insertRecord(tracking, function(err, result) {
       if(err){
         return reply('0');
