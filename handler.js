@@ -8,7 +8,7 @@ var connection = Mysql.createConnection({
   database : Cfg.mysql.database
 });
 
-var allowedDevices = Pkg.allowedDevices;
+var allowedDevices = Cfg.allowedDevices;
 
 module.exports = function (request, reply) {
   var deviceID = encodeURIComponent(request.params.deviceID)
