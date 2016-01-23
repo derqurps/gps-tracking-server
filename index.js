@@ -1,11 +1,11 @@
 const Hapi = require('hapi');
 const handler = require('./handler.js');
-const Pkg = require('./package.json');
+const Cfg = require('./config.json');
 const server = new Hapi.Server();
 
 server.connection({
-    host: Pkg.server.host,
-    port: Pkg.server.port
+    host: Cfg.server.host,
+    port: Cfg.server.port
 });
 
 server.route({

@@ -1,11 +1,11 @@
 const Mysql = require('mysql');
 const Moment = require('moment');
-const Pkg = require('./package.json');
+const Cfg = require('./config.json');
 var connection = Mysql.createConnection({
-  host     : Pkg.mysql.host,
-  user     : Pkg.mysql.user,
-  password : Pkg.mysql.password,
-  database : Pkg.mysql.database
+  host     : Cfg.mysql.host,
+  user     : Cfg.mysql.user,
+  password : Cfg.mysql.password,
+  database : Cfg.mysql.database
 });
 
 var allowedDevices = Pkg.allowedDevices;
@@ -18,7 +18,7 @@ module.exports = function (request, reply) {
     var lat = encodeURIComponent(request.params.lat)
     var lon = encodeURIComponent(request.params.lon)
     var alt = encodeURIComponent(request.params.alt)
-    var time = encodeURIComponent(request.params.time)
+    var time = moment(encodeURIComponent(request.params.time)).format('YYYY-MM-DD HH:mm:ss')
 
     var tracking = {
       deviceid:deviceID,

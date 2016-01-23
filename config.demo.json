@@ -1,0 +1,15 @@
+{
+  "mysql":{
+    "host"     : "localhost",
+    "user"     : "tracking",
+    "password" : "",
+    "database" : "tracking"
+  },
+  "allowedDevices":[
+
+  ],
+  "server":{
+    "port":8090,
+    "host":"localhost"
+  }
+}
