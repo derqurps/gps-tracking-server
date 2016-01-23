@@ -18,7 +18,7 @@ module.exports = function (request, reply) {
     var lat = encodeURIComponent(request.params.lat)
     var lon = encodeURIComponent(request.params.lon)
     var alt = encodeURIComponent(request.params.alt)
-    var time = moment(encodeURIComponent(request.params.time)).format('YYYY-MM-DD HH:mm:ss')
+    var time = Moment(encodeURIComponent(request.params.time)).format('YYYY-MM-DD HH:mm:ss')
 
     var tracking = {
       deviceid:deviceID,
