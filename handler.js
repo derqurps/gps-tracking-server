@@ -1,12 +1,6 @@
-const Mysql = require('mysql');
 const Moment = require('moment');
 const Cfg = require('./config.json');
-var connection = Mysql.createConnection({
-  host     : Cfg.mysql.host,
-  user     : Cfg.mysql.user,
-  password : Cfg.mysql.password,
-  database : Cfg.mysql.database
-});
+var db = require('./database.js');
 
 var allowedDevices = Cfg.allowedDevices;
 
@@ -14,11 +8,10 @@ module.exports = function (request, reply) {
   var deviceID = encodeURIComponent(request.params.deviceID)
   if(allowedDevices.indexOf(deviceID)>-1){
 
-
     var lat = encodeURIComponent(request.params.lat)
     var lon = encodeURIComponent(request.params.lon)
     var alt = encodeURIComponent(request.params.alt)
-    var time = Moment(encodeURIComponent(request.params.time)).format('YYYY-MM-DD HH:mm:ss')
+    var time = Moment(parseInt(encodeURIComponent(request.params.time),10)).format('YYYY-MM-DD HH:mm:ss')
 
     var tracking = {
       deviceid:deviceID,
@@ -28,10 +21,7 @@ module.exports = function (request, reply) {
       time:time
     };
     console.log(tracking)
-    connection.connect();
-    var query = connection.query('INSERT INTO tracking SET ?', tracking, function(err, result) {
-      // Neat!
-      connection.end();
+    db.insertRecord(tracking, function(err, result) {
       if(err){
         return reply('0');
       }else{
