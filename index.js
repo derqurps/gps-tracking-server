@@ -12,7 +12,12 @@ server.connection({
 server.route({
     method: 'GET',
     path:'/track/{deviceID}/{lat}/{lon}/{alt}/{time}',
-    handler: handler
+    handler: handler.saveLocation
+});
+server.route({
+    method: 'GET',
+    path:'/track/{deviceID}/{user}/{secret}/{returnWhat}',
+    handler: handler.getLocation
 });
 server.start((err) => {
 

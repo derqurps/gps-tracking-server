@@ -2,9 +2,12 @@ const Moment = require('moment');
 const Cfg = require('./config.json');
 var db = require('./database.js');
 
-var allowedDevices = Cfg.allowedDevices;
+var allowedDevices = Cfg.allowedDevices.map(function(item){
+  return item.name;
+});
 
-module.exports = function (request, reply) {
+module.exports = {}
+module.exports.saveLocation = function (request, reply) {
   var deviceID = encodeURIComponent(request.params.deviceID)
   if(allowedDevices.indexOf(deviceID)>-1){
 
@@ -20,7 +23,7 @@ module.exports = function (request, reply) {
       alt:alt,
       time:time
     };
-    
+
     db.insertRecord(tracking, function(err, result) {
       if(err){
         return reply('0');
@@ -31,5 +34,43 @@ module.exports = function (request, reply) {
 
   }else{
     return reply('not allowed');
+  }
+}
+
+
+module.exports.getLocation = function (request, reply) {
+  var deviceID = encodeURIComponent(request.params.deviceID)
+  var user = encodeURIComponent(request.params.user)
+  var secret = encodeURIComponent(request.params.secret)
+  if(allowedDevices.indexOf(deviceID)>-1 && typeof Cfg.user[user] != 'undefined' && Cfg.user[user].pw == secret){
+    if(Cfg.user[user].allowedDevices.indexOf(deviceID)>-1){
+      var returnWhat = encodeURIComponent(request.params.returnWhat)
+      if(returnWhat === 'last'){
+        db.getLastRecording(deviceID, function(err, result) {
+          if(err){
+            return reply({success:false, error:err});
+          }else{
+            return reply({success:true, result:result});
+          }
+        });
+      }
+      else if(returnWhat == 'lastOSMLink'){
+        db.getLastRecording(deviceID, function(err, result) {
+          if(err && result.length != 1){
+            return reply({success:false, error:err});
+          }else{
+            result = result[0];
+            return reply('<a target="_blank" href="http://www.openstreetmap.org/?mlat='+result.lat+'&mlon='+result.lon+'&zoom=1#map=12/'+result.lat+'/'+result.lon+'">letzter Standort</a>');
+          }
+        });
+      }else{
+
+      }
+    }
+    else{
+      return reply({success:false, error:'not allowed to view that track'});
+    }
+  }else{
+    return reply({success:false, error:'not allowed'});
   }
 }

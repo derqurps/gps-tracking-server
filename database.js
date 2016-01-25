@@ -21,6 +21,17 @@ exports.insertRecord = function( trackingObject, callback){
   });
 }
 
+exports.getLastRecording = function( deviceID, callback){
+  pool.getConnection(function(err, connection) {
+    if(err) { console.log(err); callback(true); return; }
+    var query = connection.query('SELECT * FROM tracking WHERE deviceid = \''+deviceID + '\' ORDER BY idtracking DESC LIMIT 1', function(err, result) {
+      connection.release();
+      if(err) { console.log(err); callback(true); return; }
+      callback(false, result);
+    })
+  });
+}
+
 exports.cleanup = function(){
   pool.end();
 }
