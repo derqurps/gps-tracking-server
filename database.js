@@ -27,7 +27,7 @@ exports.getLastRecording = function( deviceID, callback){
     var query = connection.query('SELECT * FROM tracking WHERE deviceid = \''+deviceID + '\' ORDER BY idtracking DESC LIMIT 1', function(err, result) {
       connection.release();
       if(err) { console.log(err); callback(true); return; }
-      callback(false, result);
+      callback(false, result[0]);
     })
   });
 }

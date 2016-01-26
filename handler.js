@@ -26,7 +26,10 @@ module.exports.saveLocation = function (request, reply) {
 
     db.insertRecord(tracking, function(err, result) {
       if(err){
-        return reply('0');
+
+        reply('0');
+        sendLocationUpdate(tracking);
+        return;
       }else{
         return reply('1');
       }
@@ -56,12 +59,7 @@ module.exports.getLocation = function (request, reply) {
       }
       else if(returnWhat == 'lastOSMLink'){
         db.getLastRecording(deviceID, function(err, result) {
-          if(err && result.length != 1){
-            return reply({success:false, error:err});
-          }else{
-            result = result[0];
-            return reply('<a target="_blank" href="http://www.openstreetmap.org/?mlat='+result.lat+'&mlon='+result.lon+'&zoom=1#map=12/'+result.lat+'/'+result.lon+'">letzter Standort</a>');
-          }
+          return reply('<a target="_blank" href="https://www.openstreetmap.org/?mlat='+result.lat+'&mlon='+result.lon+'&zoom=1#map=12/'+result.lat+'/'+result.lon+'">letzter Standort</a>');
         });
       }else{
 
@@ -73,4 +71,13 @@ module.exports.getLocation = function (request, reply) {
   }else{
     return reply({success:false, error:'not allowed'});
   }
+}
+
+
+var sendLocationUpdate = function(trackObj){
+  try{
+    global.sendObject[trackObj.deviceid].forEach(function(conn){
+      conn.write(JSON.stringify({what:"locationUpdate",data:trackObj}))
+    });
+  }catch(e){}
 }

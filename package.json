@@ -7,6 +7,7 @@
   "dependencies": {
     "hapi":"12.1.x",
     "mysql":"2.10.x",
-    "moment":"2.11.x"
+    "moment":"2.11.x",
+    "sockjs":"0.3.x"
   }
 }
