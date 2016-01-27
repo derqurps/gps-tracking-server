@@ -26,12 +26,11 @@ module.exports.saveLocation = function (request, reply) {
 
     db.insertRecord(tracking, function(err, result) {
       if(err){
-
-        reply('0');
-        sendLocationUpdate(tracking);
-        return;
+        return reply('0 '+ err);;
       }else{
-        return reply('1 '+err);
+        reply('1');
+        sendLocationUpdate(tracking);
+        return
       }
     });
 
