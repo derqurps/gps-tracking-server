@@ -12,22 +12,22 @@ var pool = Mysql.createPool({
 
 exports.insertRecord = function( trackingObject, callback){
   pool.getConnection(function(err, connection) {
-    if(err) { console.log(err); callback(true); return; }
+    if(err) { callback(true); return; }
     var query = connection.query('INSERT INTO tracking SET ?', trackingObject, function(err, result) {
       connection.release();
-      if(err) { console.log(err); callback(true); return; }
-      callback(false, result);
+      if(err) { callback(true); return; }
+      callback(null, result);
     })
   });
 }
 
 exports.getLastRecording = function( deviceID, callback){
   pool.getConnection(function(err, connection) {
-    if(err) { console.log(err); callback(true); return; }
+    if(err) { callback(err); return; }
     var query = connection.query('SELECT * FROM tracking WHERE deviceid = \''+deviceID + '\' ORDER BY idtracking DESC LIMIT 1', function(err, result) {
       connection.release();
-      if(err) { console.log(err); callback(true); return; }
-      callback(false, result[0]);
+      if(err) { callback(err); return; }
+      callback(null, result[0]);
     })
   });
 }

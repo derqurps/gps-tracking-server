@@ -31,7 +31,7 @@ module.exports.saveLocation = function (request, reply) {
         sendLocationUpdate(tracking);
         return;
       }else{
-        return reply('1');
+        return reply('1 '+err);
       }
     });
 
