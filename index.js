@@ -75,7 +75,7 @@ sockjs_echo.on('connection', function(conn) {
 
 
 
-sockjs_echo.installHandlers(server.listener, {prefix:'/echo'});
+sockjs_echo.installHandlers(server.listener, {prefix:'/track/echo'});
 
 function exitHandler(options, err) {
     db.cleanup();
